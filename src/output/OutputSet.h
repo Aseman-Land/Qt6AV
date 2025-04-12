@@ -28,6 +28,10 @@
 #include "QtAV/QtAV_Global.h"
 #include "QtAV/AVOutput.h"
 
+#ifndef ULONG_MAX
+#define ULONG_MAX 0xFFFFFFFFUL
+#endif
+
 namespace QtAV {
 
 class AVPlayer;

@@ -98,7 +98,7 @@ void registerRenderers()
 #endif //QT_NO_OPENGL
 #endif
 #if QTAV_HAVE(GL)
-    VideoRenderer::Register<GLWidgetRenderer2>(VideoRendererId_GLWidget2, "QGLWidget2");
+    // VideoRenderer::Register<GLWidgetRenderer2>(VideoRendererId_GLWidget2, "QGLWidget2");
 #endif //QTAV_HAVE(GL)
 #if QTAV_HAVE(GL1)
     VideoRenderer::Register<GLWidgetRenderer>(VideoRendererId_GLWidget, "QGLWidget");

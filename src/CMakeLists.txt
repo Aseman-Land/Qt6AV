@@ -234,7 +234,6 @@ if(NOT OPENGL AND NOT OPENGLES AND NOT DYNAMIC_GL)
 endif()
 if(HAVE_OPENGL)
   if(WIN32 AND NOT DYNAMIC_GL AND NOT OPENGLES) # msys2
-    find_package(OpenGL REQUIRED)
     list(APPEND EXTRA_LIBS ${OPENGL_gl_LIBRARY})
   endif()
 endif()
@@ -313,6 +312,7 @@ list(APPEND SOURCES
     VideoFrameExtractor.cpp
     )
 
+message(STATUS GOH ${HAVE_OPENGL})
 if(HAVE_OPENGL)
   aux_source_directory(opengl SRC_OPENGL) 
   list(APPEND SOURCES ${SRC_OPENGL})
@@ -320,10 +320,10 @@ if(HAVE_OPENGL)
     filter/GLSLFilter.cpp
     output/video/OpenGLRendererBase.cpp
   )
-  if(NOT Qt5Gui_VERSION VERSION_LESS 5.4.0)
+  # if(NOT Qt5Gui_VERSION VERSION_LESS 5.4.0)
     list(APPEND SDK_HEADERS QtAV/OpenGLWindowRenderer.h)
     list(APPEND SOURCES output/video/OpenGLWindowRenderer.cpp)
-  endif()
+  # endif()
 endif()
 
 if(HAVE_EGL AND HAVE_CAPI)
@@ -488,7 +488,7 @@ list(APPEND HEADERS ${SDK_HEADERS} ${SDK_PRIVATE_HEADERS}
 # TODO: rc template
 SET(RESOURCES ${MODULE}.qrc shaders/shaders.qrc)
 SOURCE_GROUP("Resources" FILES ${RESOURCES})
-QT5_ADD_RESOURCES(RESOURCES_SOURCES ${RESOURCES})
+QT6_ADD_RESOURCES(RESOURCES_SOURCES ${RESOURCES})
 set_source_files_properties(${RESOURCES_SOURCES} PROPERTIES GENERATED ON)
 if(WIN32)
   set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/${MODULE}.rc)
@@ -501,7 +501,7 @@ list(REMOVE_DUPLICATES EXTRA_LIBS)
 # qt5_use_modules(since 2.8.9) is deprecated since cmake 2.8.11
 target_link_libraries(${MODULE} 
   LINK_PRIVATE ${EXTRA_LIBS}
-  LINK_PUBLIC Qt5::Core Qt5::Gui # will add include dirs, macros etc.
+  LINK_PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::OpenGL Qt${QT_VERSION_MAJOR}::OpenGLWidgets # will add include dirs, macros etc.
 )
 
 foreach(PKG_CONFIG_MODULE ${PKG_CONFIG_MODULES})

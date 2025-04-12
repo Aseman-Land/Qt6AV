@@ -4,8 +4,7 @@ list(APPEND EXTRA_DEFS -DQTAV_HAVE_GL=1)
 
 set(HAVE_QT5OPENGL 0)
 if(BUILD_QT5OPENGL)
-  find_package(Qt5OpenGL)
-  if(Qt5OpenGL_FOUND)
+  if(Qt${QT_VERSION_MAJOR}::OpenGL)
     set(HAVE_QT5OPENGL 1)
   endif()
 endif()
@@ -49,10 +48,10 @@ endif()
 add_library(${MODULE} SHARED ${SOURCES} ${RESOURCES_SOURCES} ${HEADERS} ${RC_FILE})
 target_link_libraries(${MODULE}
   LINK_PRIVATE ${EXTRA_LIBS}
-  LINK_PUBLIC QtAV Qt5::Widgets
+  LINK_PUBLIC QtAV Qt${QT_VERSION_MAJOR}::Widgets
 )
 if(HAVE_QT5OPENGL)
-  target_link_libraries(${MODULE} LINK_PUBLIC Qt5::OpenGL)
+  target_link_libraries(${MODULE} LINK_PUBLIC Qt${QT_VERSION_MAJOR}::OpenGL)
 endif()
 set_target_properties(${MODULE} PROPERTIES
   MACOSX_RPATH ON

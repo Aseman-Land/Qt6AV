@@ -27,6 +27,10 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QWaitCondition>
 
+#ifndef ULONG_MAX
+#define ULONG_MAX 0xFFFFFFFFUL
+#endif
+
 //TODO: block full and empty condition separately
 QT_BEGIN_NAMESPACE
 template<typename T> class QQueue;

@@ -29,9 +29,17 @@ option(BUILD_QML "Build QML interfaces" ON)
 
 list(APPEND CMAKE_FIND_ROOT_PATH ${QTDIR})
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-get_target_property(qmake Qt5::qmake LOCATION)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets OpenGL)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets OpenGL)
+
+get_target_property(qmake Qt6::qmake LOCATION)
 execute_process(
     COMMAND ${qmake} -query QT_INSTALL_HEADERS
     OUTPUT_VARIABLE QT_INSTALL_HEADERS
@@ -117,21 +125,4 @@ if(CMAKE_GENERATOR MATCHES "Visual Studio.*")
 endif()
 
 add_subdirectory(src)
-
-find_package(Qt5Widgets)
-if(Qt5Widgets_FOUND)
-  add_subdirectory(widgets)
-endif()
-
-if(BUILD_QML)
-  find_package(Qt5 COMPONENTS Qml Quick)
-  if(Qt5Qml_FOUND AND Qt5Quick_FOUND)
-      add_subdirectory(qml)
-  endif()
-endif()
-
-if(BUILD_EXAMPLES OR BUILD_PLAYERS)
-  add_subdirectory(examples)
-endif()
-
-
+add_subdirectory(widgets)
